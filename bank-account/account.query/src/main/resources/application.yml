@@ -1,0 +1,53 @@
+server:
+  port: 5001
+
+spring:
+  jpa:
+    # postgreSQL jpa settings
+#    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: create
+#     MySQL jpa settings
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    # postgreSQL datasource settings
+    #initialization-mode: always
+    #platform: mysql
+#    url: jdbc:postgresql://localhost:5433/bankAccount
+#    username: postgres
+#    password: techbankRootPsw
+    #MySQL datasource settings
+    url: jdbc:mysql://localhost:3306/bankAccount?createDatabaseIfNotExist=true
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: techbankRootPsw
+  kafka:
+    topic: BankAccountEvents
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+      poll-timeout: 900000
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: bankaccConsumer
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+  # Specify the path of the OpenAPI documentation
+  springdoc:
+    api-docs:
+      path: /api-docs
+    swagger-ui:
+      path: /swagger-ui.html
+      enabled: true
+
+  
