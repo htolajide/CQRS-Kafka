@@ -27,7 +27,7 @@ public class AccountLookupController {
     private final Logger logger = Logger.getLogger(AccountLookupController.class.getName());
 
     @Autowired
-    private QueryDispatcher queryDispatcher;
+    private QueryDispatcher  queryDispatcher;
 
     @GetMapping(path = "/")
     public ResponseEntity<AccountLookupResponse> getAllAccounts() {

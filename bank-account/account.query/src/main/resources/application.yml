@@ -9,7 +9,7 @@ spring:
 #    hibernate:
 #      ddl-auto: create
 #     MySQL jpa settings
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+  #  database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
     hibernate:
       ddl-auto: update

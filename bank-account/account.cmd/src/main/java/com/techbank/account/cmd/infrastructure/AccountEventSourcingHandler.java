@@ -5,12 +5,16 @@ import com.techbank.cqrs.core.domain.AggregateRoot;
 import com.techbank.cqrs.core.handlers.EventSourcingHandler;
 import com.techbank.cqrs.core.infrastructure.EventStore;
 import com.techbank.cqrs.core.producers.EventProducer;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 
+@Slf4j
 @Service
 public class AccountEventSourcingHandler implements EventSourcingHandler<AccountAggregate> {
     @Autowired
@@ -49,6 +53,8 @@ public class AccountEventSourcingHandler implements EventSourcingHandler<Account
             var events = eventStore.getEvents(aggregateId);
             for(var event: events) {
                 eventProducer.produce(topic, event);
+                eventProducer.produce(event.getClass().getSimpleName(), event);
+                log.info("Event {} is reproduced", event.getClass().getSimpleName());
             }
         }
     }

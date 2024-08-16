@@ -12,12 +12,13 @@ import java.util.Map;
 
 @Service
 public class AccountCommandDispatcher implements CommandDispatcher {
-    private final Map<Class<? extends BaseCommand>, List<CommandHandlerMethod>> routes = new HashMap<>();
+    private final Map<Class<? extends BaseCommand>, List<CommandHandlerMethod<BaseCommand>>> routes = new HashMap<>();
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends BaseCommand> void registerHandler(Class<T> type, CommandHandlerMethod<T> handler) {
         var handlers = routes.computeIfAbsent(type, c -> new LinkedList<>());
-        handlers.add(handler);
+        handlers.add((CommandHandlerMethod<BaseCommand>) handler);
     }
 
     @Override

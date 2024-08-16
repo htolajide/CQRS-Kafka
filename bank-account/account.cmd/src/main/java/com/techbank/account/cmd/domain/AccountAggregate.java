@@ -6,9 +6,14 @@ import com.techbank.account.common.events.AccountOpenedEvent;
 import com.techbank.account.common.events.FundsDepositedEvent;
 import com.techbank.account.common.events.FundsWithdrawnEvent;
 import com.techbank.cqrs.core.domain.AggregateRoot;
+import com.techbank.cqrs.core.producers.EventProducer;
+
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 @NoArgsConstructor
 public class AccountAggregate extends AggregateRoot {
@@ -37,6 +42,7 @@ public class AccountAggregate extends AggregateRoot {
         this.id = event.getId();
         this.active = true;
         this.balance = event.getOpeningBalance();
+        //eventProducer.produce(event.getClass().getName(), event);
     }
 
     public void depositFunds(double amount) {
@@ -55,6 +61,7 @@ public class AccountAggregate extends AggregateRoot {
     public void apply(FundsDepositedEvent event) {
         this.id = event.getId();
         this.balance += event.getAmount();
+        //eventProducer.produce(event.getClass().getName(), event);
     }
 
     public void withdrawFunds(double amount) {
@@ -70,6 +77,7 @@ public class AccountAggregate extends AggregateRoot {
     public void apply(FundsWithdrawnEvent event) {
         this.id = event.getId();
         this.balance -= event.getAmount();
+        //eventProducer.produce(event.getClass().getName(), event);
     }
 
     public void closeAccount() {
@@ -84,5 +92,6 @@ public class AccountAggregate extends AggregateRoot {
     public void apply(AccountClosedEvent event) {
         this.id = event.getId();
         this.active = false;
+        //eventProducer.produce(event.getClass().getName(), event);
     }
 }
